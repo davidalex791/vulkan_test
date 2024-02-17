@@ -165,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FirstApp.hpp" />
+    <ClInclude Include="Lve_GameObject.hpp" />
     <ClInclude Include="Lve_Model.hpp" />
     <ClInclude Include="Lve_Pipeline.hpp" />
     <ClInclude Include="Lve_Window.hpp" />
