@@ -10,11 +10,9 @@ namespace lve
 	{
 		VkViewport viewport;
 		VkRect2D scissor;
-		VkPipelineViewportStateCreateInfo viewportInfo;
 		VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
 		VkPipelineRasterizationStateCreateInfo rasterizationInfo;
 		VkPipelineMultisampleStateCreateInfo multisampleInfo;
-		VkPipelineColorBlendAttachmentState colorBlendAttachment;
 		VkPipelineColorBlendStateCreateInfo colorBlendInfo;
 		VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
 		VkPipelineLayout pipelineLayout = nullptr;
@@ -35,9 +33,11 @@ namespace lve
 		~LvePipeline();
 
 		LvePipeline(const LvePipeline&) = delete;
-		void operator=(const LvePipeline&) = delete;
+		LvePipeline& operator=(const LvePipeline&) = delete;
 
-		static PipelineConfigInfo defaultPipelineConfigInfo(uint32_t width, uint32_t height);
+		void bind(VkCommandBuffer commandBuffer);
+
+		static void defaultPipelineConfigInfo(PipelineConfigInfo &pipelineConfig, uint32_t width, uint32_t height);
 
 	private:
 		static std::vector<char> readFile(const std::string& filepath);
