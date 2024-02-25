@@ -1,5 +1,6 @@
 #include <cassert>
 #include <cstring>
+#include <iostream>
 #include <unordered_map>
 
 #include "Lve_Model.hpp"
@@ -50,7 +51,7 @@ namespace lve
 	{
 		Builder builder{};
 		builder.loadModel(filepath);
-		//std::cout << "Vertex count:" << builder.vertices.size() << std::endl;
+		std::cout << "Vertex count:" << builder.vertices.size() << std::endl;
 		return std::make_unique<LveModel>(device, builder);
 	}
 

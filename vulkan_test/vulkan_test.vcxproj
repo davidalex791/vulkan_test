@@ -110,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%VULKAN_SDK%\..\glm\glm;%VULKAN_SDK%\..\glfw-3.3.9.bin.WIN64\include;%VULKAN_SDK%\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%VULKAN_SDK%\..\glm\glm;%VULKAN_SDK%\..\glfw-3.3.9.bin.WIN64\include;%VULKAN_SDK%\Include;$(ProjectDir)\libs\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%VULKAN_SDK%\..\glm\glm;%VULKAN_SDK%\..\glfw-3.3.9.bin.WIN64\include;%VULKAN_SDK%\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%VULKAN_SDK%\..\glm\glm;%VULKAN_SDK%\..\glfw-3.3.9.bin.WIN64\include;%VULKAN_SDK%\Include;$(ProjectDir)\libs\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -175,6 +175,7 @@
     <ClInclude Include="Lve_Model.hpp" />
     <ClInclude Include="Lve_Pipeline.hpp" />
     <ClInclude Include="Lve_Rederer.hpp" />
+    <ClInclude Include="Lve_Utils.hpp" />
     <ClInclude Include="Lve_Window.hpp" />
     <ClInclude Include="Lve_Device.hpp" />
     <ClInclude Include="Lve_SwapChain.hpp" />

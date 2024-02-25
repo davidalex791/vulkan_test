@@ -83,6 +83,9 @@
     <ClInclude Include="Keyboard_Movement_Controller.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Lve_Utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="simple_shader.frag">
