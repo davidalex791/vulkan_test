@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FirstApp.cpp" />
+    <ClCompile Include="Keyboard_Movement_Controller.cpp" />
     <ClCompile Include="Lve_Camera.cpp" />
     <ClCompile Include="Lve_Model.cpp" />
     <ClCompile Include="Lve_Pipeline.cpp" />
@@ -168,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FirstApp.hpp" />
+    <ClInclude Include="Keyboard_Movement_Controller.hpp" />
     <ClInclude Include="Lve_Camera.hpp" />
     <ClInclude Include="Lve_GameObject.hpp" />
     <ClInclude Include="Lve_Model.hpp" />

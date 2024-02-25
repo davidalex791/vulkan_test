@@ -15,6 +15,7 @@ namespace lve
 	public:
 		static constexpr int WIDTH = 1024;
 		static constexpr int HEIGHT = 768;
+		static constexpr float MAX_FRAME_TIME = 0.5f;//TODO what should be this limit?
 
 		FirstApp(const std::string& path);
 		~FirstApp();
