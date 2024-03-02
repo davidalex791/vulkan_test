@@ -71,13 +71,22 @@ namespace lve
 
 	void FirstApp::loadGameObjects()
 	{
-		std::shared_ptr<LveModel> lveModel = LveModel::createModelFromFile(lveDevice, shadersPath + "..\\..\\models\\smooth_vase.obj.txt");
-		auto gameObj = LveGameObject::createGamerObject();
-		gameObj.model = lveModel;
-		gameObj.transform.translation = { .0f, .0f, 2.5f };
-		gameObj.transform.scale = glm::vec3(3.f);
+		std::shared_ptr<LveModel> lveModel = LveModel::createModelFromFile(lveDevice, shadersPath + "..\\..\\models\\flat_vase.obj.txt");
+		auto flatVase = LveGameObject::createGamerObject();
+		flatVase.model = lveModel;
+		flatVase.transform.translation = { -.5f, .5f, 2.5f };
+		flatVase.transform.scale = { 3.f, 1.5f, 3.f }; // glm::vec3(3.f);
 
-		gameObjects.push_back(std::move(gameObj));
+		gameObjects.push_back(std::move(flatVase));
+
+		lveModel = LveModel::createModelFromFile(lveDevice, shadersPath + "..\\..\\models\\smooth_vase.obj.txt");
+		auto smoothVase = LveGameObject::createGamerObject();
+		smoothVase.model = lveModel;
+		smoothVase.transform.translation = { .5f, .5f, 2.5f };
+		smoothVase.transform.scale = { 3.f, 1.5f, 3.f }; // glm::vec3(3.f);
+
+		gameObjects.push_back(std::move(smoothVase));
+
 
 	}
 

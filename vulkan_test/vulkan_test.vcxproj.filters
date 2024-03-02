@@ -48,6 +48,9 @@
     <ClCompile Include="Keyboard_Movement_Controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Lve_GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FirstApp.hpp">
