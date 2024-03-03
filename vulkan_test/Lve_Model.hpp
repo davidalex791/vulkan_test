@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include "Lve_Device.hpp"
+#include "Lve_Buffer.hpp"
 
 //libs
 #define GLM_FORCE_RADIANS
@@ -58,14 +59,12 @@ namespace lve
 
 		LveDevice& lveDevice;
 
-		VkBuffer vertexBuffer;
-		VkDeviceMemory vertexBufferMemory;
+		std::unique_ptr<LveBuffer> vertexBuffer;
 		uint32_t vertexCount;
 
 		bool hasIndexBuffer{ false };
 
-		VkBuffer indexBuffer;
-		VkDeviceMemory indexBufferMemory;
+		std::unique_ptr<LveBuffer>indexBuffer;
 		uint32_t indexCount;
 
 	};
