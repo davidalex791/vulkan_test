@@ -113,4 +113,18 @@
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\models\colored_cube.obj.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="..\models\cube.obj.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="..\models\flat_vase.obj.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="..\models\smooth_vase.obj.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
