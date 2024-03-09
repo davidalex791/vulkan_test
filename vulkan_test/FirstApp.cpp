@@ -4,7 +4,8 @@
 #include <chrono>
 #include <array>
 #include "Lve_Camera.hpp"
-#include "Simple_Render_System.hpp"
+#include "systems/Simple_Render_System.hpp"
+#include "systems/Point_Light_System.hpp"
 #include "Keyboard_Movement_Controller.hpp"
 #include "Lve_Buffer.hpp"
 
@@ -71,6 +72,9 @@ namespace lve
 		}
 
 		SimpleRenderSystem simpleRendererSystem(lveDevice, lveRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), shadersPath);
+		PointLightSystem pointLightSystem(lveDevice, lveRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), shadersPath);
+
+
 		LveCamera camera{};
 		camera.setViewTarget(glm::vec3{ -1.f, -2.f, 2.f }, glm::vec3{ 0.0f, 0.f, 2.5f });
 
@@ -119,6 +123,7 @@ namespace lve
 				//render
 				lveRenderer.beginSwapChainRenderPass(commandBuffer);
 				simpleRendererSystem.render(frameInfo);
+				pointLightSystem.render(frameInfo);
 				lveRenderer.endSwapChainRenderPass(commandBuffer);
 				lveRenderer.endFrame();
 			}

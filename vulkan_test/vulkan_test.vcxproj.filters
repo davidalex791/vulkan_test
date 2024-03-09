@@ -118,6 +118,12 @@
     <None Include="simple_shader.vert">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="shaders\point_light.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="shaders\point_light.vert">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\models\colored_cube.obj.txt">

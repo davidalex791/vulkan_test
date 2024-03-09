@@ -110,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%VULKAN_SDK%\..\glm\glm;%VULKAN_SDK%\..\glfw-3.3.9.bin.WIN64\include;%VULKAN_SDK%\Include;$(ProjectDir)\libs\tinyobjloader;%(AdditionalIncludeDirectories);$(ProjectDir);$(ProjectDir)\systems;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%VULKAN_SDK%\..\glm\glm;%VULKAN_SDK%\..\glfw-3.3.9.bin.WIN64\include;%VULKAN_SDK%\Include;$(ProjectDir)\libs\tinyobjloader;%(AdditionalIncludeDirectories);$(ProjectDir);</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -124,7 +124,7 @@
       </Command>
     </CustomBuildStep>
     <PreBuildEvent>
-      <Command>$(ProjectDir)\compile_shaders.bat</Command>
+      <Command>$(ProjectDir)\compile_shaders.bat $(OutDir)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%VULKAN_SDK%\..\glm\glm;%VULKAN_SDK%\..\glfw-3.3.9.bin.WIN64\include;%VULKAN_SDK%\Include;$(ProjectDir)\libs\tinyobjloader;%(AdditionalIncludeDirectories);$(ProjectDir);$(ProjectDir)\systems;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%VULKAN_SDK%\..\glm\glm;%VULKAN_SDK%\..\glfw-3.3.9.bin.WIN64\include;%VULKAN_SDK%\Include;$(ProjectDir)\libs\tinyobjloader;%(AdditionalIncludeDirectories);$(ProjectDir);</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -151,7 +151,7 @@
       </Command>
     </CustomBuildStep>
     <PreBuildEvent>
-      <Command>$(ProjectDir)\compile_shaders.bat</Command>
+      <Command>$(ProjectDir)\compile_shaders.bat $(OutDir)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -190,6 +190,8 @@
     <ClInclude Include="systems\Simple_Render_System.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\point_light.frag" />
+    <None Include="shaders\point_light.vert" />
     <None Include="simple_shader.frag" />
     <None Include="simple_shader.vert" />
   </ItemGroup>
