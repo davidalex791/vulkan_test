@@ -39,7 +39,7 @@
     <ClCompile Include="Lve_Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Simple_Render_System.cpp">
+    <ClCompile Include="systems\Simple_Render_System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Lve_Camera.cpp">
@@ -55,6 +55,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Lve_Descriptors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="systems\Point_Light_System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +86,7 @@
     <ClInclude Include="Lve_Rederer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Simple_Render_System.hpp">
+    <ClInclude Include="systems\Simple_Render_System.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Lve_Camera.hpp">
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Lve_Descriptors.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="systems\Point_Light_System.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -19,7 +19,8 @@ namespace lve
 {
 	struct GlobalUbo //buffer object structures
 	{
-		glm::mat4 projectionView{ 1.f };
+		glm::mat4 projection{ 1.f };
+		glm::mat4 view{ 1.f };
 		glm::vec4 ambientLightColor{ 1.f, 1.f, 1.f, .02f }; //w is intensity
 		glm::vec3 lightPosition{ -1.f };
 		//uint32 padding;
@@ -36,7 +37,7 @@ namespace lve
 			.addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, LveSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.build();
 
-		loadGameObjects();
+		loadGameObjects(path + "..\\..\\models\\");
 	}
 
 	FirstApp::~FirstApp()
@@ -110,13 +111,14 @@ namespace lve
 				};
 				//update
 				GlobalUbo ubo{};
-				ubo.projectionView = camera.getProjection() * camera.getView();
+				ubo.projection = camera.getProjection();
+				ubo.view = camera.getView();
 				uboBuffers[frameIndex]->writeToIndex(&ubo, frameIndex);
 				uboBuffers[frameIndex]->flush();
 
 				//render
 				lveRenderer.beginSwapChainRenderPass(commandBuffer);
-				simpleRendererSystem.renderGameObjects(frameInfo);
+				simpleRendererSystem.render(frameInfo);
 				lveRenderer.endSwapChainRenderPass(commandBuffer);
 				lveRenderer.endFrame();
 			}
@@ -125,9 +127,9 @@ namespace lve
 		vkDeviceWaitIdle(lveDevice.device()); //await finish commands
 	}
 
-	void FirstApp::loadGameObjects()
+	void FirstApp::loadGameObjects(const std::string &modelsPath)
 	{
-		std::shared_ptr<LveModel> lveModel = LveModel::createModelFromFile(lveDevice, shadersPath + "..\\..\\models\\flat_vase.obj.txt");
+		std::shared_ptr<LveModel> lveModel = LveModel::createModelFromFile(lveDevice, modelsPath + "flat_vase.obj.txt");
 		auto flatVase = LveGameObject::createGamerObject();
 		flatVase.model = lveModel;
 		flatVase.transform.translation = { -.5f, .5f, .0f };
@@ -135,7 +137,7 @@ namespace lve
 
 		gameObjects.emplace(flatVase.getId(), std::move(flatVase));
 
-		lveModel = LveModel::createModelFromFile(lveDevice, shadersPath + "..\\..\\models\\smooth_vase.obj.txt");
+		lveModel = LveModel::createModelFromFile(lveDevice, modelsPath + "smooth_vase.obj.txt");
 		auto smoothVase = LveGameObject::createGamerObject();
 		smoothVase.model = lveModel;
 		smoothVase.transform.translation = { .5f, .5f, 0.f };
@@ -144,7 +146,7 @@ namespace lve
 		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
 
 
-		lveModel = LveModel::createModelFromFile(lveDevice, shadersPath + "..\\..\\models\\quad.obj.txt");
+		lveModel = LveModel::createModelFromFile(lveDevice, modelsPath + "quad.obj.txt");
 		auto floorObj = LveGameObject::createGamerObject();
 		floorObj.model = lveModel;
 		floorObj.transform.translation = { 0.f, .5f, 0.f };

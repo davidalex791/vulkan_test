@@ -27,7 +27,7 @@ namespace lve
 		void run();
 
 	private:
-		void loadGameObjects();
+		void loadGameObjects(const std::string &modelsPath);
 
 		LveWindow lveWindow{ WIDTH, HEIGHT, "Hello Vulkan!" };
 		LveDevice lveDevice{ lveWindow };
