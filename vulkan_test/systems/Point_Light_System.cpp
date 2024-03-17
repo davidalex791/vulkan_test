@@ -1,7 +1,9 @@
 #include "Point_Light_System.hpp"
-#include <stdexcept>
-#include <memory>
 #include <array>
+#include <cassert>
+#include <map>
+#include <memory>
+#include <stdexcept>
 
 //libs
 #define GLM_FORCE_RADIANS
@@ -61,6 +63,7 @@ namespace lve
 
 		PipelineConfigInfo pipelineConfig{};
 		LvePipeline::defaultPipelineConfigInfo(pipelineConfig);
+		LvePipeline::enableAlphaBlending(pipelineConfig);
 		pipelineConfig.attributeDescriptions.clear();
 		pipelineConfig.bindingDescriptions.clear();
 		pipelineConfig.renderPass = renderPass;
@@ -82,13 +85,13 @@ namespace lve
 			}
 			
 			assert(lightIndex < MAX_LIGHTS && "Point lights exceed maximum specified.");
-
 			//update light position
 			obj.transform.translation = glm::vec3(rotateLight * glm::vec4(obj.transform.translation, 1.f));
-			
+
 			//copy light to ubo
 			ubo.pointLights[lightIndex].position = glm::vec4(obj.transform.translation, 1.f);
 			ubo.pointLights[lightIndex].color = glm::vec4(obj.color, obj.pointLight->lightIntensity);
+
 			lightIndex++; 
 		}
 		ubo.numLights = lightIndex;
@@ -96,6 +99,23 @@ namespace lve
 
 	void PointLightSystem::render(FrameInfo &frameInfo)
 	{
+		//sort lights
+		std::map<float, LveGameObject::id_t> sorted;
+		for (auto &kv : frameInfo.gameObjects)
+		{
+			auto &obj = kv.second;
+			if (nullptr == obj.pointLight)
+			{
+				continue;
+			}
+
+			//calculate distance
+			auto offset = frameInfo.camera.getPosition() - obj.transform.translation;
+			float disSquared = glm::dot(offset, offset);
+			sorted[disSquared] = obj.getId();
+		}
+
+
 		lvePipeline->bind(frameInfo.commandBuffer);
 
 		vkCmdBindDescriptorSets(
@@ -108,13 +128,11 @@ namespace lve
 			0, 
 			nullptr);
 
-		for (auto &kv : frameInfo.gameObjects)
+		//iterate through sorted lights in reverse order
+		for (auto it = sorted.rbegin(); it != sorted.rend(); ++it)
 		{
-			auto &obj = kv.second;
-			if (nullptr == obj.pointLight)
-			{
-				continue;
-			}
+			//use game obj id to find light object
+			auto &obj = frameInfo.gameObjects.at(it->second);
 
 			PointLightPushConstants push{};
 			push.position = glm::vec4(obj.transform.translation, 1.f);
