@@ -112,12 +112,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="simple_shader.frag">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="simple_shader.vert">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="shaders\point_light.frag">
       <Filter>Source Files</Filter>
     </None>
@@ -133,9 +127,6 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="..\models\flat_vase.obj.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="..\models\smooth_vase.obj.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

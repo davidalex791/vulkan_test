@@ -192,14 +192,11 @@
   <ItemGroup>
     <None Include="shaders\point_light.frag" />
     <None Include="shaders\point_light.vert" />
-    <None Include="simple_shader.frag" />
-    <None Include="simple_shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\models\colored_cube.obj.txt" />
     <Text Include="..\models\cube.obj.txt" />
     <Text Include="..\models\flat_vase.obj.txt" />
-    <Text Include="..\models\smooth_vase.obj.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -107,6 +107,7 @@ namespace lve
 				GlobalUbo ubo{};
 				ubo.projection = camera.getProjection();
 				ubo.view = camera.getView();
+				ubo.inverseView = camera.getInverseView();
 				pointLightSystem.update(frameInfo, ubo);
 				uboBuffers[frameIndex]->writeToIndex(&ubo, frameIndex);
 				uboBuffers[frameIndex]->flush();
@@ -149,12 +150,12 @@ namespace lve
 
 
 		std::vector<glm::vec3> lightColors{
-	 {1.f, .1f, .1f},
-	 {.1f, .1f, 1.f},
-	 {.1f, 1.f, .1f},
-	 {1.f, 1.f, .1f},
-	 {.1f, 1.f, 1.f},
-	 {1.f, 1.f, 1.f}  //
+			 {1.f, .1f, .1f},
+			 {.1f, .1f, 1.f},
+			 {.1f, 1.f, .1f},
+			 {1.f, 1.f, .1f},
+			 {.1f, 1.f, 1.f},
+			 {1.f, 1.f, 1.f}  //
 		};
 		for (int i = 0; i < lightColors.size(); i++)
 		{
