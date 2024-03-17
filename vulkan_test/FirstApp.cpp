@@ -18,17 +18,7 @@
 
 namespace lve
 {
-	struct GlobalUbo //buffer object structures
-	{
-		glm::mat4 projection{ 1.f };
-		glm::mat4 view{ 1.f };
-		glm::vec4 ambientLightColor{ 1.f, 1.f, 1.f, .02f }; //w is intensity
-		glm::vec3 lightPosition{ -1.f };
-		//uint32 padding;
-		alignas(16)  glm::mat4 lightColor{ 1.f }; //w is light intensity (r, g,  b, intensity) => (r x i, g x i, b x i)
-		//glm::vec3 pointLight;
-		// ...
-	};
+
 
 
 	FirstApp::FirstApp(const std::string& path) : shadersPath{ path }
@@ -117,6 +107,7 @@ namespace lve
 				GlobalUbo ubo{};
 				ubo.projection = camera.getProjection();
 				ubo.view = camera.getView();
+				pointLightSystem.update(frameInfo, ubo);
 				uboBuffers[frameIndex]->writeToIndex(&ubo, frameIndex);
 				uboBuffers[frameIndex]->flush();
 
@@ -139,7 +130,6 @@ namespace lve
 		flatVase.model = lveModel;
 		flatVase.transform.translation = { -.5f, .5f, .0f };
 		flatVase.transform.scale = { 3.f, 1.5f, 3.f }; // glm::vec3(3.f);
-
 		gameObjects.emplace(flatVase.getId(), std::move(flatVase));
 
 		lveModel = LveModel::createModelFromFile(lveDevice, modelsPath + "smooth_vase.obj.txt");
@@ -147,7 +137,6 @@ namespace lve
 		smoothVase.model = lveModel;
 		smoothVase.transform.translation = { .5f, .5f, 0.f };
 		smoothVase.transform.scale = { 3.f, 1.5f, 3.f }; // glm::vec3(3.f);
-
 		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
 
 
@@ -156,11 +145,29 @@ namespace lve
 		floorObj.model = lveModel;
 		floorObj.transform.translation = { 0.f, .5f, 0.f };
 		floorObj.transform.scale = { 3.f, 1.f, 3.f };
-
 		gameObjects.emplace(floorObj.getId(), std::move(floorObj));
 
 
+		std::vector<glm::vec3> lightColors{
+	 {1.f, .1f, .1f},
+	 {.1f, .1f, 1.f},
+	 {.1f, 1.f, .1f},
+	 {1.f, 1.f, .1f},
+	 {.1f, 1.f, 1.f},
+	 {1.f, 1.f, 1.f}  //
+		};
+		for (int i = 0; i < lightColors.size(); i++)
+		{
+			auto pointLight = LveGameObject::makePointLight(0.2f);
+			pointLight.color = lightColors[i];
+			auto rotateLight = glm::rotate(
+				glm::mat4(1.f),
+				(i * glm::two_pi<float>()) / lightColors.size(),
+				{ 0.f, -1.f, 0.f });
+			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
+			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
 
+		}
 	}
 
 
