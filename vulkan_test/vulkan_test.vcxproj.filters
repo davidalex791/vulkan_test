@@ -60,6 +60,9 @@
     <ClCompile Include="systems\Point_Light_System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Lve_Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FirstApp.hpp">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="systems\Point_Light_System.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lve_Texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

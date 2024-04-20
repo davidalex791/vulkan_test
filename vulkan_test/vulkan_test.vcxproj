@@ -164,6 +164,7 @@
     <ClCompile Include="Lve_Model.cpp" />
     <ClCompile Include="Lve_Pipeline.cpp" />
     <ClCompile Include="Lve_Renderer.cpp" />
+    <ClCompile Include="Lve_Texture.cpp" />
     <ClCompile Include="Lve_Window.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Lve_Device.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Lve_Model.hpp" />
     <ClInclude Include="Lve_Pipeline.hpp" />
     <ClInclude Include="Lve_Rederer.hpp" />
+    <ClInclude Include="Lve_Texture.hpp" />
     <ClInclude Include="Lve_Utils.hpp" />
     <ClInclude Include="Lve_Window.hpp" />
     <ClInclude Include="Lve_Device.hpp" />

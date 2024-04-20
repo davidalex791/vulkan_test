@@ -17,8 +17,9 @@ namespace lve
 	{
 		init();
 	}
-	LveSwapChain::LveSwapChain(LveDevice& deviceRef, VkExtent2D extent, std::shared_ptr<LveSwapChain>previous)
-		: device{ deviceRef }, windowExtent{ extent }, oldSwapChain{ previous }
+	LveSwapChain::LveSwapChain(
+		LveDevice &deviceRef, VkExtent2D extent, std::shared_ptr<LveSwapChain>previous)
+		: device{ deviceRef }, windowExtent{extent }, oldSwapChain{ previous }
 	{
 		init();
 
@@ -73,7 +74,7 @@ namespace lve
 		}
 	}
 
-	VkResult LveSwapChain::acquireNextImage(uint32_t* imageIndex)
+	VkResult LveSwapChain::acquireNextImage(uint32_t *imageIndex)
 	{
 		vkWaitForFences(
 			device.device(),
@@ -93,8 +94,7 @@ namespace lve
 		return result;
 	}
 
-	VkResult LveSwapChain::submitCommandBuffers(
-		const VkCommandBuffer* buffers, uint32_t* imageIndex)
+	VkResult LveSwapChain::submitCommandBuffers(const VkCommandBuffer *buffers, uint32_t *imageIndex)
 	{
 		if (imagesInFlight[*imageIndex] != VK_NULL_HANDLE)
 		{

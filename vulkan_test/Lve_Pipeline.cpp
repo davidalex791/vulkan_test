@@ -24,7 +24,6 @@ namespace lve
 		vkDestroyPipeline(lveDevice.device(), graphicsPipeline, nullptr);
 	}
 
-
 	std::vector<char> LvePipeline::readFile(const std::string& filepath)
 	{
 		std::ifstream file{ filepath, std::ios::ate | std::ios::binary };
@@ -42,8 +41,8 @@ namespace lve
 		std::vector<char> buffer(fileSize);
 		file.seekg(0);
 		file.read(buffer.data(), fileSize);
-		file.close();
 
+		file.close();
 		return buffer;
 	}
 
@@ -68,7 +67,6 @@ namespace lve
 		shaderStages[0].flags = 0;
 		shaderStages[0].pNext = nullptr;
 		shaderStages[0].pSpecializationInfo = nullptr;
-
 		shaderStages[1].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 		shaderStages[1].stage = VK_SHADER_STAGE_FRAGMENT_BIT;
 		shaderStages[1].module = fragShaderModule;
@@ -79,10 +77,10 @@ namespace lve
 
 		auto &bindingDescriptions = configInfo.bindingDescriptions;
 		auto &attributeDescriptions = configInfo.attributeDescriptions;
-
 		VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
 		vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-		vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
+		vertexInputInfo.vertexAttributeDescriptionCount = 
+			static_cast<uint32_t>(attributeDescriptions.size());
 		vertexInputInfo.vertexBindingDescriptionCount = static_cast<uint32_t>(bindingDescriptions.size());
 		vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
 		vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.data();
@@ -107,7 +105,13 @@ namespace lve
 		pipelineInfo.basePipelineIndex = -1;
 		pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-		if (vkCreateGraphicsPipelines(lveDevice.device(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS)
+		if (vkCreateGraphicsPipelines(
+			lveDevice.device(), 
+			VK_NULL_HANDLE, 
+			1, 
+			&pipelineInfo, 
+			nullptr, 
+			&graphicsPipeline) != VK_SUCCESS)
 		{
 			throw std::runtime_error("Failed to create graphics pipeline.");
 		}
@@ -124,8 +128,14 @@ namespace lve
 		{
 			throw std::runtime_error("Failed to create shader module.");
 		}
-
 	}
+	
+	void LvePipeline::bind(VkCommandBuffer commandBuffer)
+	{
+		assert(nullptr != graphicsPipeline && "Graphics pipeline should have been initialised.");
+		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
+	}
+	
 	void LvePipeline::defaultPipelineConfigInfo(PipelineConfigInfo &configInfo)
 	{
 		configInfo.inputAssemblyInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -158,7 +168,9 @@ namespace lve
 		configInfo.multisampleInfo.alphaToCoverageEnable = VK_FALSE;  // Optional
 		configInfo.multisampleInfo.alphaToOneEnable = VK_FALSE;       // Optional
 		
-		configInfo.colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+		configInfo.colorBlendAttachment.colorWriteMask = 
+			VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | 
+			VK_COLOR_COMPONENT_A_BIT;
 		configInfo.colorBlendAttachment.blendEnable = VK_FALSE;
 		configInfo.colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_ONE;   // Optional
 		configInfo.colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;  // Optional
@@ -166,7 +178,6 @@ namespace lve
 		configInfo.colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;   // Optional
 		configInfo.colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;  // Optional
 		configInfo.colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;              // Optional
-
 
 		configInfo.colorBlendInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
 		configInfo.colorBlendInfo.logicOpEnable = VK_FALSE;
@@ -192,32 +203,26 @@ namespace lve
 		configInfo.dynamicStateEnables = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
 		configInfo.dynamicStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
 		configInfo.dynamicStateInfo.pDynamicStates = configInfo.dynamicStateEnables.data();
-		configInfo.dynamicStateInfo.dynamicStateCount = static_cast<uint32_t>(configInfo.dynamicStateEnables.size());
+		configInfo.dynamicStateInfo.dynamicStateCount = 
+			static_cast<uint32_t>(configInfo.dynamicStateEnables.size());
 		configInfo.dynamicStateInfo.flags = 0;
 
 		configInfo.bindingDescriptions = LveModel::Vertex::getBindingDescriptions();
 		configInfo.attributeDescriptions = LveModel::Vertex::getAttributeDescriptions();
-
-	}
-
-	void LvePipeline::bind(VkCommandBuffer commandBuffer)
-	{
-		assert(nullptr != graphicsPipeline && "Graphics pipeline should have been initialised.");
-		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 	}
 
 	void LvePipeline::enableAlphaBlending(PipelineConfigInfo &configInfo)
 	{
 		configInfo.colorBlendAttachment.blendEnable = VK_TRUE; //performance cost to have it enabled for all pipelines
-		configInfo.colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-
+		configInfo.colorBlendAttachment.colorWriteMask = 
+			VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | 
+			VK_COLOR_COMPONENT_A_BIT;
 		configInfo.colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
 		configInfo.colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
 		configInfo.colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;              
 		configInfo.colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE; 
 		configInfo.colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
 		configInfo.colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;            
-
 	}
 
 } //namespace lve

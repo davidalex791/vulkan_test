@@ -7,7 +7,7 @@
 
 //libs
 #define TINYOBJLOADER_IMPLEMENTATION
-#include <tiny_obj_loader.h>
+#include <libs/tinyobjloader/tiny_obj_loader.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp>
@@ -33,18 +33,17 @@ namespace lve
 		createVertexBuffers(builder.vertices);
 		createIndexBuffers(builder.indices);
 	}
-	LveModel::~LveModel()
-	{
-	}
 
-	std::unique_ptr<LveModel> LveModel::createModelFromFile(LveDevice &device, const std::string &filepath)
+	LveModel::~LveModel() {}
+
+	std::unique_ptr<LveModel> LveModel::createModelFromFile(
+		LveDevice &device, const std::string &filepath)
 	{
 		Builder builder{};
 		builder.loadModel(filepath);
 		//std::cout << "Vertex count:" << builder.vertices.size() << std::endl;
 		return std::make_unique<LveModel>(device, builder);
 	}
-
 
 	void LveModel::createVertexBuffers(const std::vector<LveModel::Vertex>& vertices)
 	{
@@ -53,16 +52,26 @@ namespace lve
 		VkDeviceSize bufferSize = sizeof(vertices[0]) * vertexCount;
 		uint32_t vertexSize = sizeof(vertices[0]);
 
-		LveBuffer stagingBuffer{ lveDevice, vertexSize, vertexCount, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT };
+		LveBuffer stagingBuffer{ 
+			lveDevice, 
+			vertexSize, 
+			vertexCount, 
+			VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
+			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+		};
 
 		stagingBuffer.map();
 		stagingBuffer.writeToBuffer((void *)vertices.data());
 
-		vertexBuffer = std::make_unique<LveBuffer>(lveDevice, vertexSize, vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+		vertexBuffer = std::make_unique<LveBuffer>(
+			lveDevice, 
+			vertexSize, 
+			vertexCount, 
+			VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, 
+			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
 		//copy staging buffer to device buffer (recommended for static data only)
 		lveDevice.copyBuffer(stagingBuffer.getBuffer(), vertexBuffer->getBuffer(), bufferSize);
-
 	}
 
 	void LveModel::createIndexBuffers(const std::vector<uint32_t> &indices)
@@ -78,27 +87,26 @@ namespace lve
 		VkDeviceSize bufferSize = sizeof(indices[0]) * indexCount;
 		uint32_t indexSize = sizeof(indices[0]);
 
-
-		LveBuffer stagingBuffer{ lveDevice, indexSize, indexCount, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT };
+		LveBuffer stagingBuffer{ 
+			lveDevice, 
+			indexSize, 
+			indexCount, 
+			VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
+			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+		};
 
 		stagingBuffer.map();
 		stagingBuffer.writeToBuffer((void *)indices.data());
 	
-		indexBuffer = std::make_unique<LveBuffer>(lveDevice, indexSize, indexCount, VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+		indexBuffer = std::make_unique<LveBuffer>(
+			lveDevice, 
+			indexSize, 
+			indexCount, 
+			VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, 
+			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
 		//copy staging buffer to local buffer
 		lveDevice.copyBuffer(stagingBuffer.getBuffer(), indexBuffer->getBuffer(), bufferSize);
-	}
-
-	void LveModel::bind(VkCommandBuffer commandBuffer)
-	{
-		VkBuffer buffers[] = { vertexBuffer->getBuffer()};
-		VkDeviceSize offsets[] = { 0 };
-		vkCmdBindVertexBuffers(commandBuffer, 0, 1, buffers, offsets);
-		if (hasIndexBuffer)
-		{
-			vkCmdBindIndexBuffer(commandBuffer, indexBuffer->getBuffer(), 0, VK_INDEX_TYPE_UINT32);
-		}
 	}
 
 	void LveModel::draw(VkCommandBuffer commandBuffer)
@@ -110,6 +118,17 @@ namespace lve
 		else
 		{
 			vkCmdDraw(commandBuffer, vertexCount, 1, 0, 0);
+		}
+	}
+
+	void LveModel::bind(VkCommandBuffer commandBuffer)
+	{
+		VkBuffer buffers[] = { vertexBuffer->getBuffer()};
+		VkDeviceSize offsets[] = { 0 };
+		vkCmdBindVertexBuffers(commandBuffer, 0, 1, buffers, offsets);
+		if (hasIndexBuffer)
+		{
+			vkCmdBindIndexBuffer(commandBuffer, indexBuffer->getBuffer(), 0, VK_INDEX_TYPE_UINT32);
 		}
 	}
 
@@ -144,12 +163,11 @@ namespace lve
 		{
 			throw std::runtime_error(warn + err);
 		}
+
 		vertices.clear();
 		indices.clear();
 
 		std::unordered_map<Vertex, uint32_t> uniqueVertices{};
-
-
 		for (const auto &shape : shapes)
 		{
 			for (const auto &index : shape.mesh.indices)
@@ -170,8 +188,6 @@ namespace lve
 						attrib.colors[3 * index.vertex_index + 1],
 						attrib.colors[3 * index.vertex_index + 2],
 					};
-
-
 				}
 				if (index.normal_index >= 0)
 				{
@@ -202,4 +218,4 @@ namespace lve
 			}
 		}
 	}
-}
+} //namespace lve

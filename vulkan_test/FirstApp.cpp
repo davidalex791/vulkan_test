@@ -26,14 +26,14 @@ namespace lve
 		globalPool = LveDescriptorPool::Builder(lveDevice)
 			.setMaxSets(LveSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, LveSwapChain::MAX_FRAMES_IN_FLIGHT)
+            .addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, LveSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.build();
 
 		loadGameObjects(path + "..\\..\\models\\");
+		texture = std::make_unique<Lve_Texture>(lveDevice, path + "..\\..\\textures\\meme.png");
 	}
 
-	FirstApp::~FirstApp()
-	{
-	}
+	FirstApp::~FirstApp() {}
 
 	void FirstApp::run()
 	{
@@ -48,8 +48,14 @@ namespace lve
 				VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
 			uboBuffers[i]->map();
 		}
+		
+		VkDescriptorImageInfo imageInfo = {};
+		imageInfo.sampler = texture->getSampler();
+		imageInfo.imageView = texture->getImageView();
+		imageInfo.imageLayout = texture->getImageLayout();		
 		auto globalSetLayout = LveDescriptorSetLayout::Builder(lveDevice)
 			.addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
+			.addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
 			.build();
 
 		std::vector<VkDescriptorSet> globalDescriptorSets(LveSwapChain::MAX_FRAMES_IN_FLIGHT);
@@ -58,17 +64,26 @@ namespace lve
 			auto bufferInfo = uboBuffers[i]->descriptorInfo();
 			LveDescriptorWriter(*globalSetLayout, *globalPool)
 				.writeBuffer(0, &bufferInfo)
+        		.writeImage(1, &imageInfo)
 				.build(globalDescriptorSets[i]);
 		}
 
-		SimpleRenderSystem simpleRendererSystem(lveDevice, lveRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), shadersPath);
-		PointLightSystem pointLightSystem(lveDevice, lveRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), shadersPath);
+		SimpleRenderSystem simpleRenderSystem{
+			lveDevice, 
+			lveRenderer.getSwapChainRenderPass(), 
+			globalSetLayout->getDescriptorSetLayout(), 
+			shadersPath};
+		PointLightSystem pointLightSystem{
+			lveDevice, lveRenderer.
+			getSwapChainRenderPass(), 
+			globalSetLayout->getDescriptorSetLayout(), 
+			shadersPath};
 
 
 		LveCamera camera{};
 		camera.setViewTarget(glm::vec3{ -1.f, -2.f, 2.f }, glm::vec3{ 0.0f, 0.f, 2.5f });
 
-		auto viewerObject = LveGameObject::createGamerObject();
+		auto viewerObject = LveGameObject::createGameObject();
 		viewerObject.transform.translation.z = -2.5f;
 
 		KeyboardMovementController cameraController{};
@@ -116,7 +131,7 @@ namespace lve
 				lveRenderer.beginSwapChainRenderPass(commandBuffer);
 
 				//order here matters (solid objects then transparent objects)
-				simpleRendererSystem.render(frameInfo);
+				simpleRenderSystem.render(frameInfo);
 				pointLightSystem.render(frameInfo);
 
 				lveRenderer.endSwapChainRenderPass(commandBuffer);
@@ -130,14 +145,14 @@ namespace lve
 	void FirstApp::loadGameObjects(const std::string &modelsPath)
 	{
 		std::shared_ptr<LveModel> lveModel = LveModel::createModelFromFile(lveDevice, modelsPath + "flat_vase.obj.txt");
-		auto flatVase = LveGameObject::createGamerObject();
+		auto flatVase = LveGameObject::createGameObject();
 		flatVase.model = lveModel;
-		flatVase.transform.translation = { -.5f, .5f, .0f };
+		flatVase.transform.translation = { -.5f, .5f, 0.f };
 		flatVase.transform.scale = { 3.f, 1.5f, 3.f }; // glm::vec3(3.f);
 		gameObjects.emplace(flatVase.getId(), std::move(flatVase));
 
 		lveModel = LveModel::createModelFromFile(lveDevice, modelsPath + "smooth_vase.obj.txt");
-		auto smoothVase = LveGameObject::createGamerObject();
+		auto smoothVase = LveGameObject::createGameObject();
 		smoothVase.model = lveModel;
 		smoothVase.transform.translation = { .5f, .5f, 0.f };
 		smoothVase.transform.scale = { 3.f, 1.5f, 3.f }; // glm::vec3(3.f);
@@ -145,7 +160,7 @@ namespace lve
 
 
 		lveModel = LveModel::createModelFromFile(lveDevice, modelsPath + "quad.obj.txt");
-		auto floorObj = LveGameObject::createGamerObject();
+		auto floorObj = LveGameObject::createGameObject();
 		floorObj.model = lveModel;
 		floorObj.transform.translation = { 0.f, .5f, 0.f };
 		floorObj.transform.scale = { 3.f, 1.f, 3.f };
@@ -170,7 +185,6 @@ namespace lve
 				{ 0.f, -1.f, 0.f });
 			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-
 		}
 	}
 

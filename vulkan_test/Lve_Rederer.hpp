@@ -23,13 +23,14 @@ namespace lve
 		VkRenderPass getSwapChainRenderPass() const
 		{
 			return lveSwapChain->getRenderPass();
-		};
+		}
 		float getAspectRatio() const
 		{
 			return lveSwapChain->extentAspectRatio();
 		}
 
 		bool isFrameInProgress() const { return isFrameStarted; }
+		
 		VkCommandBuffer getCurrentCommandBuffer() const
 		{
 			assert(commandBuffers.size() > currentFrameIndex && "Current Frame Index out of command buffers size");
@@ -59,7 +60,7 @@ namespace lve
 		std::vector<VkCommandBuffer> commandBuffers;
 
 		uint32_t currentImageIndex;
-		int currentFrameIndex;
+		int currentFrameIndex{0};
 		bool isFrameStarted{ false };
 	};
-}
+} //namespace lve

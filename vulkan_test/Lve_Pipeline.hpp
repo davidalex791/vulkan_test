@@ -14,7 +14,6 @@ namespace lve
 
 		std::vector<VkVertexInputBindingDescription> bindingDescriptions{};
 		std::vector<VkVertexInputAttributeDescription> attributeDescriptions{};
-
 		VkPipelineViewportStateCreateInfo viewportInfo;
 		VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
 		VkPipelineRasterizationStateCreateInfo rasterizationInfo;
@@ -52,7 +51,11 @@ namespace lve
 	private:
 		static std::vector<char> readFile(const std::string& filepath);
 		
-		void createGraphicsPipeline(const std::string& vertFilePath, const std::string& fragFilePath, const PipelineConfigInfo& configInfo);
+		void createGraphicsPipeline(
+			const std::string& vertFilePath, 
+			const std::string& fragFilePath, 
+			const PipelineConfigInfo& configInfo);
+
 		void createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule);
 
 		LveDevice& lveDevice;

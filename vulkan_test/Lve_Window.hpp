@@ -53,6 +53,6 @@ namespace lve
 		bool framebufferResized{ false };
 		
 		std::string windowName;
-		GLFWwindow* window{ nullptr };
+		GLFWwindow *window{ nullptr };
 	};
 }//namespace lve

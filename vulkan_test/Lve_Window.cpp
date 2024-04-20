@@ -7,12 +7,12 @@ namespace lve
 	{
 		initWindow();
 	}
+	
 	LveWindow::~LveWindow()
 	{
 		glfwDestroyWindow(window);
 		glfwTerminate();
 	}
-
 
 	void LveWindow::initWindow()
 	{

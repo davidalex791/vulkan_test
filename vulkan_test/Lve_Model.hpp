@@ -42,13 +42,15 @@ namespace lve
 
 			void loadModel(const std::string &filepath);
 		};
+
 		LveModel(LveDevice& device, const LveModel::Builder &builder);
 		~LveModel();
 
 		LveModel(const LveModel&) = delete;
 		LveModel& operator=(const LveModel&) = delete;
 
-		static std::unique_ptr<LveModel> createModelFromFile(LveDevice &device, const std::string &filepath);
+		static std::unique_ptr<LveModel> createModelFromFile(
+			LveDevice &device, const std::string &filepath);
 
 		void bind(VkCommandBuffer commandBuffer);
 		void draw(VkCommandBuffer commandBuffer);
@@ -63,9 +65,7 @@ namespace lve
 		uint32_t vertexCount;
 
 		bool hasIndexBuffer{ false };
-
 		std::unique_ptr<LveBuffer>indexBuffer;
 		uint32_t indexCount;
-
 	};
-}
+} //namespace lve

@@ -24,11 +24,7 @@ struct QueueFamilyIndices
   
   bool graphicsFamilyHasValue = false;
   bool presentFamilyHasValue = false;
-
-  bool isComplete() 
-  { 
-      return graphicsFamilyHasValue && presentFamilyHasValue; 
-  }
+  bool isComplete() { return graphicsFamilyHasValue && presentFamilyHasValue; }
 };
 
 class LveDevice {
@@ -59,6 +55,8 @@ class LveDevice {
   QueueFamilyIndices findPhysicalQueueFamilies() { return findQueueFamilies(physicalDevice); }
   VkFormat findSupportedFormat(
       const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
+
+  VkPhysicalDevice getPhysicalDevice() { return physicalDevice; }
 
   // Buffer Helper Functions
   void createBuffer(

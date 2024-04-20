@@ -36,7 +36,6 @@ layout(push_constant) uniform Push
 void main()
 {
 	fragOffset = OFFSETS[gl_VertexIndex];
-
 	vec3 cameraRightWorld = {ubo.view[0][0], ubo.view[1][0], ubo.view[2][0]};
 	vec3 cameraUpWorld = {ubo.view[0][1], ubo.view[1][1], ubo.view[2][1]};
 	

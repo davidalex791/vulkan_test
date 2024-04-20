@@ -8,6 +8,7 @@
 #include "Lve_GameObject.hpp"
 #include "Lve_Rederer.hpp"
 #include "Lve_Descriptors.hpp"
+#include "lve_Texture.hpp"
 
 namespace lve
 {
@@ -35,10 +36,9 @@ namespace lve
 
 		//note: order of declarations matters
 		std::unique_ptr<LveDescriptorPool> globalPool{};
+  		std::unique_ptr<Lve_Texture> texture{};
 		LveGameObject::Map gameObjects;
 
 		std::string shadersPath;
-
-
 	};
-}
+} //namespace lve

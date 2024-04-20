@@ -23,15 +23,13 @@ namespace lve
 			int lookDown	 = GLFW_KEY_DOWN;
 		};
 
+		void moveInPlaneXZ(GLFWwindow *window, float dt, LveGameObject &gameObject);
+
 		KeyMappings keys{};
 		float moveSpeed{ 3.f };
 		float lookSpeed{ 1.5f };
 
-		void moveInPlaneXZ(GLFWwindow *window, float dt, LveGameObject &gameObject);
-
 	private:
 
 	};
-
-
- }//namespace lve
+}//namespace lve
